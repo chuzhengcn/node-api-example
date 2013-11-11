@@ -1,4 +1,4 @@
 node-api-example
 ================
 
-nodejs api example
+use BDD testing method
