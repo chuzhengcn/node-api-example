@@ -1,0 +1,18 @@
+{
+    "name" : "nodejs-api-examples",
+    "description" : "use examples to learn",
+    "author" : "chu zheng",
+    "version" : "0.0.1",
+    "private" : true,
+    "main" : "./lib/app.js",
+    "engines": { 
+        "node": "*" 
+    },
+    "dependencies": {
+      "should" : "*",
+      "mocha"  : "*"
+    },
+    "scripts": {
+        "test": "make test"
+    }
+}
