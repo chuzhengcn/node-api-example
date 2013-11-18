@@ -130,20 +130,63 @@ describe('Buffer', function () {
         })
     })
 
+    describe('buf.readUInt8(offset, [noAssert])', function() {
+        it('should return a number < 255, because read a byte', function() {
+            var buf = new Buffer(4);
 
+            buf[0] = 0xA;
+            buf[1] = 0xB;
+            buf[2] = 0x23;
+            buf[3] = 0x42;
 
+            buf.readUInt8(1).should.exactly(11)
+        })
+    })
 
+    describe('buf.readUInt16LE(offset, [noAssert]), buf.readUInt16BE(offset, [noAssert])', function() {
+        var buf = new Buffer(4);
 
+        buf[0] = 0x3;
+        buf[1] = 0x4;
+        buf[2] = 0x23;
+        buf[3] = 0x42;
 
+        it('should return a number < 255 * 255 form right to left, because read 16 bit', function() {
+            buf.readUInt16LE(0).should.exactly(0x403)
+        })
 
+        it('should return a number < 255 * 255 form left to right, because read 16 bit', function() {
+            buf.readUInt16BE(0).should.exactly(0x304)
+        })
+    })
 
+    describe('buf.readUInt32LE(offset, [noAssert]), buf.readUInt32BE(offset, [noAssert])', function() {
+        var buf = new Buffer(4);
 
+        buf[0] = 0x3;
+        buf[1] = 0x4;
+        buf[2] = 0x23;
+        buf[3] = 0x42;
 
+        it('should return a number < 255 * 255 * 255 * 255 form right to left, because read 16 bit', function() {
+            buf.readUInt32LE(0).should.exactly(0x42230403)
+        })
 
+        it('should return a number < 255 * 255 * 255 * 255 form left to right, because read 16 bit', function() {
+            buf.readUInt32BE(0).should.exactly(0x3042342)
+        })
+    })
 
+    describe('buf.readInt8(offset, [noAssert])', function() {
+        it('should return a negtive number except buffer contents are treated as two\'s complement signed values [补码]', function() {
+            var buf = new Buffer(4);
 
+            buf[0] = 0xff;
+            buf[1] = 0xff;
+            buf[2] = 0x23;
+            buf[3] = 0x42;
 
-
-
-
+            buf.readInt8(1).should.exactly(-1)
+        })
+    })
 })
