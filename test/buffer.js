@@ -346,4 +346,15 @@ describe('Buffer', function () {
             buf.toString().should.exactly('ccccc')
         })
     })
+
+    describe('buffer.INSPECT_MAX_BYTES', function() {
+        it('should return buffer string default 50 bytes', function() {
+            var buffer = require('buffer')           
+            buffer.INSPECT_MAX_BYTES.should.exactly(50)
+            buffer.INSPECT_MAX_BYTES = 60
+            buffer.INSPECT_MAX_BYTES.should.exactly(60)
+        })
+    })
+
+    // todo : Class: SlowBuffer
 })
