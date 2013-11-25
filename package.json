@@ -10,7 +10,8 @@
     },
     "dependencies": {
       "should" : "*",
-      "mocha"  : "*"
+      "mocha"  : "*",
+      "request" : "*"
     },
     "scripts": {
         "test": "make test"
