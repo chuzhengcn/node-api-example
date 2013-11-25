@@ -146,7 +146,7 @@ describe('Stream', function () {
     })
 
     describe("#readable.pipe(destination, [options])", function() {
-        it('can pause data event', function(done) {
+        it('can use pipe to generate a big file', function(done) {
             var readable = fs.createReadStream(__dirname + '/../src/breaking-bad.jpg'),
                 writeable = fs.createWriteStream(__dirname + '/../src/breaking-bad2.jpg');
 
@@ -157,6 +157,26 @@ describe('Stream', function () {
             })
         })
     })
+
+    describe("#readable.unpipe([destination])", function() {
+        it('can pause data event', function(done) {
+            var readable = fs.createReadStream(__dirname + '/../src/breaking-bad.jpg'),
+                writeable = fs.createWriteStream(__dirname + '/../src/breaking-bad2.jpg');
+
+            readable.pipe(writeable)
+
+            setTimeout(function () {
+                readable.unpipe()
+                writeable.end()
+                fs.statSync(__dirname + '/../src/breaking-bad2.jpg').size.should.below(1000000)
+                done()
+            }, 50)
+        })
+    })
+
+    // todo : #readable.unshift(chunk)
+
+    // info : #readable.warp(stream)
 })
 
 
