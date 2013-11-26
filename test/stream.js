@@ -169,7 +169,7 @@ describe('Stream', function () {
                 writeable.end()
                 fs.statSync(__dirname + '/../src/breaking-bad2.jpg').size.should.below(1000000)
                 done()
-            }, 50)
+            }, 10)
         })
     })
 
@@ -182,6 +182,43 @@ describe('Stream', function () {
             var writeable = fs.createWriteStream(__dirname + '/../src/write-stream.text');
 
             writeable.write('some test strings','utf8', function() {
+                done()
+            })
+
+        })
+    })
+
+    describe("#Event: 'drain'", function() {
+        it('should fired when readable faster than writeable and writeable is free to recivie data', function(done) {
+            var writeable = fs.createWriteStream(__dirname + '/../src/write-stream.text');
+
+            function writeOneMillionTimes(writer, data, encoding, callback) {
+                var i = 1000;
+
+                write();
+
+                function write() {
+                    var ok = true;
+                    do {
+                        i -= 1;
+                        if (i === 0) {
+                            // last time!
+                            writer.write(data, encoding, callback);
+                        } else {
+                            // see if we should continue, or wait
+                            // don't pass the callback, because we're not done yet.
+                            ok = writer.write(data, encoding);
+                        }
+                    } while (i > 0 && ok);
+                    if (i > 0) {
+                        // had to stop early!
+                        // write some more once it drains
+                        writer.once('drain', write);
+                    }
+                }
+            }
+
+            writeOneMillionTimes(writeable, '1', 'utf8', function() {
                 done()
             })
 
