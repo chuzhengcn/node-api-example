@@ -1,5 +1,4 @@
 var stream  = require('stream'),
-    request = require('request'),
     http    = require('http'),
     fs      = require('fs'),
     should  = require('should');
@@ -177,6 +176,17 @@ describe('Stream', function () {
     // todo : #readable.unshift(chunk)
 
     // info : #readable.warp(stream)
+
+    describe("#writable.write(chunk, [encoding], [callback])", function() {
+        it('can write into stream', function(done) {
+            var writeable = fs.createWriteStream(__dirname + '/../src/write-stream.text');
+
+            writeable.write('some test strings','utf8', function() {
+                done()
+            })
+
+        })
+    })
 })
 
 
